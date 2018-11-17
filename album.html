@@ -10,24 +10,23 @@
 		<script type="text/javascript">
 		
 
-		function getAlbum(){
+		function getAlbums(){
 			var url = document.location.toString();
     		var res = url.split("?");    	
 	    	var id = res[1].substr(3);
+			sessionStorage.setItem('userId', id);
 
-	    	 $.ajax({url: "https://jsonplaceholder.typicode.com/albums", success: function(result){
-				 	var users = result;
-				 	sessionStorage.setItem('albums', JSON.stringify(result));
-				 	sessionStorage.setItem('userId', id);
-				 	
+			var albums = [];
+	    	 $.ajax({url: "https://jsonplaceholder.typicode.com/albums", async: false, success: function(result){
+				 	albums = result;
 			    }});
-
+			return albums;	
 		}
 
 
 		</script>
 	</head>
-	<body onload="getAlbum()">
+	<body>
 		<!-- Page Header start -->
 		<nav class="navbar navbar-default">
 			<div class="container">
@@ -68,7 +67,7 @@
 					</thead>
 					<tbody id="div1">
 						<script>
-							var alb = JSON.parse(sessionStorage.getItem("albums"));
+							var alb = getAlbums();
 
 							for(i=0;i<alb.length;i++)
 							{

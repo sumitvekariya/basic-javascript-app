@@ -10,26 +10,25 @@
 		<script type="text/javascript">
 		
 
-		function getAlbum(){
+		function getPhotos(){
 			var url = document.location.toString();
     		var res = url.split("?");   
 	    	var id = res[1].substr(3);
-            
+            sessionStorage.setItem('albumId', id);
 
-	    	 $.ajax({url: "https://jsonplaceholder.typicode.com/photos", success: function(result){
-				 	var users = result;
-				 	sessionStorage.setItem('photos', JSON.stringify(result));
-				 	sessionStorage.setItem('albumId', id);
-				 	
-					
+			var photos = [];
+
+	    	 $.ajax({url: "https://jsonplaceholder.typicode.com/photos", async: false, success: function(result){
+				 	photos = result;				
 			    }});
+			return photos;
 
 		}
 
 
 		</script>
 	</head>
-	<body onload="getAlbum()">
+	<body>
 		<!-- Page Header start -->
 		<nav class="navbar navbar-default">
 			<div class="container">
@@ -75,13 +74,13 @@
 					</thead>
 					<tbody id="div1">
 						<script>
-							var alb = JSON.parse(sessionStorage.getItem("photos"));
+							var photos = getPhotos();
 							var count = 0;
-							for(i=0;i<alb.length;i++)
+							for(i=0;i<photos.length;i++)
 							{
-								if(alb[i].albumId==sessionStorage.getItem("albumId"))
+								if(photos[i].albumId == sessionStorage.getItem("albumId"))
 								{
-									document.getElementById('div1').innerHTML += "<tr><td>"+alb[i].id+"</td><td>"+alb[i].albumId+"</td><td>"+alb[i].title+"</td></td><td>"+alb[i].url+"</td><td><img src='"+alb[i].thumbnailUrl+"' /><td></tr>";
+									document.getElementById('div1').innerHTML += "<tr><td>"+photos[i].id+"</td><td>"+photos[i].albumId+"</td><td>"+photos[i].title+"</td></td><td>"+photos[i].url+"</td><td><img src='"+photos[i].thumbnailUrl+"' /><td></tr>";
 									count++;
 								}
 								if(count==5)
