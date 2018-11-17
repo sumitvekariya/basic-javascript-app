@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Users Page</title>
-		<base href="/basic-javascript-app/">
+		<!-- <!-- <base href="basic-javascript-app/"> --> -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
 		<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
@@ -11,16 +11,15 @@
 			var user;
 			function getData(){
 
-				 $.ajax({url: "https://jsonplaceholder.typicode.com/users", success: function(result){
-				 	var users = result;
-				 	sessionStorage.setItem('users', JSON.stringify(result));
-				 	
+				$.ajax({url: "https://jsonplaceholder.typicode.com/users",async: false, success: function(result){
+					user = result;
 			    }});
+				return user;
 			}
 
 		</script>
 	</head>
-	<body onload="getData()">
+	<body>
 		<!-- Page Header start -->
 		<nav class="navbar navbar-default">
 			<div class="container">
@@ -65,13 +64,10 @@
 					<tbody id="div10">
 
 						<script>
-							var obj = JSON.parse(sessionStorage.getItem("users"));
-                            // if (!users) {
-							// 	return;
-							// } 
+							
+							var obj = getData();
 							for(i=0;i<obj.length;i++)
-							{
-							                                
+							{                   
                                document.getElementById('div10').innerHTML += "<tr><td>"+obj[i].id+"</td><td>"+obj[i].name+"</td><td>"+obj[i].username+"</td><td>"+obj[i].email+"</td><td>"+obj[i].address.city+"</td><td>"+obj[i].phone+"</td><td>"+obj[i].website+"</td><td>"+obj[i].company.name+"</td><td><a href='album.html?id="+obj[i].id+"'><button class='btn btn-xs btn-flat btn-info'><i class='fa fa-sign-in'></i> Album </button></a></td></tr>";                      
 							}
                             
